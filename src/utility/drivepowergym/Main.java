@@ -1,8 +1,8 @@
-package drivepowergym;
+package utility.drivepowergym;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+	    Program.run();
     }
 }

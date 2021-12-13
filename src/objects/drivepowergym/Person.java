@@ -1,4 +1,4 @@
-package drivepowergym;
+package objects.drivepowergym;
 
 public class Person {
 

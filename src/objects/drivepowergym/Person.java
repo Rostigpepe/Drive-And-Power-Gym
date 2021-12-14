@@ -12,7 +12,7 @@ public class Person {
      * @param username Username of the person
      * @param password Password of the person
      */
-    public Person(String name,
+    protected Person(String name,
                   String username,
                   String password){
 

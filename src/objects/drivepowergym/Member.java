@@ -2,9 +2,13 @@ package objects.drivepowergym;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Member extends Person{
+
+    private static List<Member> allMembers = new ArrayList<>();
 
     private LocalDate lastPayment;
     private int membershipLevel;
@@ -21,6 +25,8 @@ public class Member extends Person{
 
         lastPayment = LocalDate.now();
         this.membershipLevel = membershipLevel;
+
+        allMembers.add(this);
     }
 
 

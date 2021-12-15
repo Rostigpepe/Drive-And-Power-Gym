@@ -24,6 +24,8 @@ public class Program {
         MainMenus.startupMenu();
     }
 
+    /**Writes everything to file before we exit the program
+     */
     public static void writeAllToFile(){
         List<Member> allMembers = Member.getAllMembers();
         List<PersonalTrainer> allEmployees = PersonalTrainer.getAllEmployees();

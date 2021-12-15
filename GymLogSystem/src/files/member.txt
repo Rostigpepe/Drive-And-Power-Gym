@@ -1,0 +1,4 @@
+azeem,abc_123,new_password,0
+new_member,abc,123,1
+new,new_000,123,2
+mukhtar,mk12,123,2

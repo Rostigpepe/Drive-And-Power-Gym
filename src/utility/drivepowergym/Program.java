@@ -9,6 +9,9 @@ public class Program {
 
 
     public static void run(){
+        File_Management.readFromMembers();
+        File_Management.readFromEmployees();
+
         Main_Menus.startupMenu();
     }
 

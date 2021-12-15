@@ -1,5 +1,7 @@
 package objects.drivepowergym;
 
+import utility.drivepowergym.File_Management;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,11 +21,12 @@ public class Member extends Person{
     public Member(String name,
                   String username,
                   String password,
+                  LocalDate lastPayment,
                   int membershipLevel){
 
         super(name, username, password);
 
-        lastPayment = LocalDate.now();
+        this.lastPayment = lastPayment;
         this.membershipLevel = membershipLevel;
 
         allMembers.add(this);
@@ -54,6 +57,23 @@ public class Member extends Person{
         return membershipLevel;
     }
 
+    /**Gets all information in the member class as a string
+     * Simply put, adds all elements to a list, uses a string builder and for loop to create a string
+     * @return Returns a string of all member info, comma separated
+     */
+    public String getInfoString(){
+        List<String> infoList = getInfoList();
+
+        infoList.add(lastPayment.toString());
+        infoList.add(Integer.toString(membershipLevel));
+
+        StringBuilder infoString = new StringBuilder();
+
+        for (String str : infoList){
+            infoString.append(str).append(",");
+        }
+        return infoString.toString();
+    }
 
     /**Updates last payment date to current date, Effectively updating membership
      */

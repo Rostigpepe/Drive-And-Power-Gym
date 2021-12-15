@@ -2,18 +2,26 @@ package menus.drivepowergym;
 
 import objects.drivepowergym.Member;
 import objects.drivepowergym.PersonalTrainer;
+import utility.drivepowergym.File_Management;
 import utility.drivepowergym.Program;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main_Menus {
 
-    private static Member testMember = new Member("Robin Stenskytt", "Rostigpepe", "12345", 3);
+    private static Member testMember = new Member("Robin Stenskytt",
+            "Rostigpepe",
+            "12345",
+            LocalDate.now(),
+            3);
+
     private static PersonalTrainer testPT = new PersonalTrainer("Rozerin Bozdag",
             "Mothofthelamp",
             "12345",
             "Nonbinary",
             "Cardio");
+
     private static final Scanner uInput = new Scanner(System.in);
 
     //Utility class, we don't want instances
@@ -23,6 +31,8 @@ public class Main_Menus {
      * If added GUI, replace input with buttons for all the options
      */
     public static void startupMenu(){
+        File_Management.registerNewMember(testMember);
+        File_Management.registerNewEmployee(testPT);
         System.out.println("1: Log in as Member");
         System.out.println("2: Log in as Employee");
         System.out.println("3: Log in as Admin");

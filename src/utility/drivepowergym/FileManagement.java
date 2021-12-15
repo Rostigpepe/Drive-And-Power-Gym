@@ -1,15 +1,16 @@
 package utility.drivepowergym;
 
 import objects.drivepowergym.Member;
+import objects.drivepowergym.MembershipLevels;
 import objects.drivepowergym.PersonalTrainer;
 
 import java.io.*;
 import java.time.LocalDate;
 
-public class File_Management {
+public class FileManagement {
 
     //Utility class, miss me with that constructor
-    private File_Management(){}
+    private FileManagement(){}
 
 
     /**Method to write a newly registered member to the member file
@@ -53,6 +54,23 @@ public class File_Management {
     }
 
 
+    private static MembershipLevels parseStringToMembership(String str){
+        MembershipLevels temp;
+
+        switch (str){
+            case "SILVER" -> temp = MembershipLevels.SILVER;
+            case "GOLD" -> temp = MembershipLevels.GOLD;
+            case "PLATINUM" -> temp = MembershipLevels.PLATINUM;
+            case "DIAMOND" -> temp = MembershipLevels.DIAMOND;
+            case "OLYMPIAN" -> temp = MembershipLevels.OLYMPIAN;
+            default -> {
+                System.out.println("Something went wrong in FileManagement, parseStringToMembership");
+                temp = null;
+            }
+        }
+        return temp;
+    }
+
     /**Reads all members from file and creates objects of them
      */
     public static void readFromMembers(){
@@ -67,7 +85,7 @@ public class File_Management {
                 String username = infoBits[1];
                 String password = infoBits[2];
                 LocalDate lastPayment = LocalDate.parse(infoBits[3]);
-                int membershipLevel = Integer.parseInt(infoBits[4]);
+                MembershipLevels membershipLevel = parseStringToMembership(infoBits[4]);
 
                 new Member(name, username, password, lastPayment, membershipLevel);
 
@@ -93,10 +111,12 @@ public class File_Management {
                 String name = infoBits[0];
                 String username = infoBits[1];
                 String password = infoBits[2];
-                String gender = infoBits[3];
-                String specialty = infoBits[4];
+                int employmentID = Integer.parseInt(infoBits[3]);
+                String gender = infoBits[4];
+                double totalBookedHours = Double.parseDouble(infoBits[5]);
+                String specialty = infoBits[6];
 
-                new PersonalTrainer(name, username, password, gender, specialty);
+                new PersonalTrainer(name, username, password, employmentID, gender, totalBookedHours, specialty);
 
                 line = reader.readLine();
             }

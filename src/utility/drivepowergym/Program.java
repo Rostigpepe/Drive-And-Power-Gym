@@ -1,6 +1,6 @@
 package utility.drivepowergym;
 
-import menus.drivepowergym.Main_Menus;
+import menus.drivepowergym.MainMenus;
 
 public class Program {
 
@@ -9,10 +9,10 @@ public class Program {
 
 
     public static void run(){
-        File_Management.readFromMembers();
-        File_Management.readFromEmployees();
+        FileManagement.readFromMembers();
+        FileManagement.readFromEmployees();
 
-        Main_Menus.startupMenu();
+        MainMenus.startupMenu();
     }
 
 

@@ -1,7 +1,5 @@
 package objects.drivepowergym;
 
-import utility.drivepowergym.File_Management;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -10,10 +8,10 @@ import java.util.List;
 
 public class Member extends Person{
 
-    private static List<Member> allMembers = new ArrayList<>();
+    private static final List<Member> allMembers = new ArrayList<>();
 
     private LocalDate lastPayment;
-    private int membershipLevel;
+    private MembershipLevels membershipLevel;
 
     /**Basic constructor with a super class
      * @param membershipLevel Membership level for the user, ex Gold, Platinum, Diamond
@@ -22,7 +20,7 @@ public class Member extends Person{
                   String username,
                   String password,
                   LocalDate lastPayment,
-                  int membershipLevel){
+                  MembershipLevels membershipLevel){
 
         super(name, username, password);
 
@@ -33,7 +31,7 @@ public class Member extends Person{
     }
 
 
-    public void setMembershipLevel(int newLevel){
+    public void setMembershipLevel(MembershipLevels newLevel){
         membershipLevel = newLevel;
     }
 
@@ -53,7 +51,7 @@ public class Member extends Person{
         return daysPassed <= 31;
     }
 
-    public int getMembershipLevel(){
+    public MembershipLevels getMembershipLevel(){
         return membershipLevel;
     }
 
@@ -65,7 +63,7 @@ public class Member extends Person{
         List<String> infoList = getInfoList();
 
         infoList.add(lastPayment.toString());
-        infoList.add(Integer.toString(membershipLevel));
+        infoList.add(membershipLevel.toString());
 
         StringBuilder infoString = new StringBuilder();
 
@@ -80,4 +78,20 @@ public class Member extends Person{
     public void renewMembership(){
         lastPayment = LocalDate.now();
     }
+    public void addMonthToMembership(){lastPayment = lastPayment.plusDays(31); }
+
+
+    /**If the username already exists, sends back a true, otherwise false
+     * @param usernameToCheck Entered username, check if it already exists
+     * @return Whether the username exists or not
+     */
+    public static boolean checkIfUsernameExists(String usernameToCheck){
+        for (Member member : allMembers){
+            if(usernameToCheck.equals(member.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

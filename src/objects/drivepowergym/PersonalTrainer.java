@@ -2,12 +2,14 @@ package objects.drivepowergym;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PersonalTrainer extends Person {
 
     private static List<PersonalTrainer> allEmployees = new ArrayList<>();
+    private static Random rndSeed = new Random();
 
-    private int employmentID;
+    private final int employmentID;
     private String gender;
     private double totalBookedHours;
     private String specialty;
@@ -19,15 +21,18 @@ public class PersonalTrainer extends Person {
     public PersonalTrainer(String name,
                            String username,
                            String password,
+                           int employmentID,
                            String gender,
+                           double totalBookedHours,
                            String specialty){
 
         super(name, username, password);
 
-        //Placeholder employmentID
-        employmentID = 1;
+
+
+        this.employmentID = employmentID;
         this.gender = gender;
-        totalBookedHours = 0;
+        this.totalBookedHours = totalBookedHours;
         this.specialty = specialty;
 
         allEmployees.add(this);
@@ -81,4 +86,14 @@ public class PersonalTrainer extends Person {
         //Parameters take are for example, length, date and focus
         //Possibly take input for all of those upon calling this method
     }
+
+    public static boolean checkForDuplicateIDs(int num){
+        for (PersonalTrainer pt : allEmployees){
+            if (num == pt.getEmploymentID()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

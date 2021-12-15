@@ -2,7 +2,7 @@ package objects.drivepowergym;
 
 import java.time.LocalDate;
 
-public class Group_Cardio extends Activity{
+public class GroupCardio extends Activity{
 
     private int intensity;
     private boolean outside;
@@ -13,12 +13,12 @@ public class Group_Cardio extends Activity{
      * @param outside Whether the cardio will be outside or not
      * @param weather What type of weather it will be, ex Inside, Rainy, Calm, Windy, Scorching
      */
-    public Group_Cardio(int spots,
-                        LocalDate time,
-                        double duration,
-                        int intensity,
-                        boolean outside,
-                        String weather){
+    public GroupCardio(int spots,
+                       LocalDate time,
+                       double duration,
+                       int intensity,
+                       boolean outside,
+                       String weather){
 
         super(spots, time, duration);
 

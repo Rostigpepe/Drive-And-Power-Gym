@@ -200,7 +200,7 @@ public class MemberMenus {
             System.out.println("Focus: " + appointment.getFocus());
             System.out.println("Duration: " + appointment.getDurationInMinutes());
             System.out.println("Time: " + appointment.getTime());
-            System.out.println("Trainer: " + appointment.getTrainer());
+            System.out.println("Trainer: " + appointment.getTrainer().getName());
 
             i++;
         }

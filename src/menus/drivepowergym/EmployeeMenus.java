@@ -107,12 +107,17 @@ public class EmployeeMenus {
     public static void displayAllAppointments(PersonalTrainer loggedInUser){
         List<PTAppointment> appointments = PTAppointment.getAllAppointmentsForThisTrainer(loggedInUser);
 
-        int i = 0;
+        int i = 1;
         for (PTAppointment appointment : appointments){
+            List<Member> participants = appointment.getParticipants();
+
             System.out.println("\nAppointment " + i + "");
             System.out.println("Time: " + appointment.getTime());
             System.out.println("Focus: " + appointment.getFocus());
-            System.out.println("Participants: " + appointment.getParticipants());
+            System.out.println("Participants: ");
+            for (Member participant : participants){
+                System.out.println(participant.getName());
+            }
         }
     }
 
@@ -161,7 +166,7 @@ public class EmployeeMenus {
         int inHowLong;
 
         System.out.println("\nIn how many days would you like to create an appointment?");
-        System.out.println(">>: ");
+        System.out.print(">>: ");
 
         while(true){
             try {
@@ -183,8 +188,8 @@ public class EmployeeMenus {
         double duration;
 
         System.out.println("\nHow many minutes should the appointment be?");
-        System.out.println("MAX 3 HOURS");
-        System.out.println(">>: ");
+        System.out.println("MAX 180 MINUTES");
+        System.out.print(">>: ");
 
         while(true){
             try {

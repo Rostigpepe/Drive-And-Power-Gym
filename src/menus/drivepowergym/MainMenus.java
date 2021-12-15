@@ -2,6 +2,7 @@ package menus.drivepowergym;
 
 import objects.drivepowergym.Member;
 import objects.drivepowergym.MembershipLevels;
+import objects.drivepowergym.Person;
 import objects.drivepowergym.PersonalTrainer;
 import utility.drivepowergym.FileManagement;
 import utility.drivepowergym.Program;
@@ -34,8 +35,6 @@ public class MainMenus {
      * If added GUI, replace input with buttons for all the options
      */
     public static void startupMenu(){
-        FileManagement.registerNewMember(testMember);
-        FileManagement.registerNewEmployee(testPT);
         System.out.println("1: Log in as Member");
         System.out.println("2: Log in as Employee");
         System.out.println("3: Log in as Admin");
@@ -63,29 +62,34 @@ public class MainMenus {
      * @param loggedInUser Current logged in member
      */
     public static void memberMainMenu(Member loggedInUser){
-        MemberMenus.displayNames(loggedInUser);
+        loggedInUser.displayNames();
 
         System.out.println("1: Register for activity");
-        System.out.println("2: Change account information");
-        System.out.println("3: Pay membership fee");
-        System.out.println("4: Log out");
+        System.out.println("2: Display all registered activities");
+        System.out.println("3: Change account information");
+        System.out.println("4: Pay membership fee");
+        System.out.println("5: Log out");
 
         String input = uInput.nextLine();
 
         switch (input){
             case "1" -> {
-                //registerForActivityMenu(loggedInUser);
+                MemberMenus.registerForActivity(loggedInUser);
                 memberMainMenu(loggedInUser);
             }
             case "2" -> {
-                MemberMenus.changeInfoMenu(loggedInUser);
+                MemberMenus.displayAllRegisteredActivities(loggedInUser);
                 memberMainMenu(loggedInUser);
             }
             case "3" -> {
+                MemberMenus.changeInfoMenu(loggedInUser);
+                memberMainMenu(loggedInUser);
+            }
+            case "4" -> {
                 MemberMenus.payFeeMenu(loggedInUser);
                 memberMainMenu(loggedInUser);
             }
-            case "4" -> startupMenu();
+            case "5" -> startupMenu();
             default -> {
                 System.out.println("Please enter 1-4\n\n");
                 memberMainMenu(loggedInUser);
@@ -99,8 +103,7 @@ public class MainMenus {
      * @param loggedInUser Currently logged in employee
      */
     public static void employeeMainMenu(PersonalTrainer loggedInUser){
-        System.out.println("Name: " + loggedInUser.getName());
-        System.out.println("Username: " + loggedInUser.getUsername() + "\n\n");
+        loggedInUser.displayNames();
 
         System.out.println("1: Add new appointment");
         System.out.println("2: Display appointments");
@@ -111,15 +114,15 @@ public class MainMenus {
 
         switch (input){
             case "1" -> {
-                //loggedInUser.newAppointment();
+                EmployeeMenus.createNewAppointment(loggedInUser);
                 employeeMainMenu(loggedInUser);
             }
             case "2" -> {
-                //displayAllAppointments(loggedInUser);
+                EmployeeMenus.displayAllAppointments(loggedInUser);
                 employeeMainMenu(loggedInUser);
             }
             case "3" -> {
-                //changeInformationMenu(loggedInUser);
+                EmployeeMenus.changeInfoMenu(loggedInUser);
                 employeeMainMenu(loggedInUser);
             }
             case "4" -> startupMenu();

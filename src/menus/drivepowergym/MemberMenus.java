@@ -1,8 +1,11 @@
 package menus.drivepowergym;
 
+import objects.drivepowergym.GroupCardio;
 import objects.drivepowergym.Member;
 import objects.drivepowergym.MembershipLevels;
+import objects.drivepowergym.PTAppointment;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MemberMenus {
@@ -12,17 +15,12 @@ public class MemberMenus {
     //Helper class, constructors are cringe
     private MemberMenus(){}
 
-    public static void displayNames(Member loggedInUser){
-        System.out.println("\nName: " + loggedInUser.getName());
-        System.out.println("Username: " + loggedInUser.getUsername() + "\n");
-    }
-
 
     /**Menu for displaying options to change account information
      * @param loggedInUser Currently logged on user
      */
     public static void changeInfoMenu(Member loggedInUser){
-        displayNames(loggedInUser);
+        loggedInUser.displayNames();
 
         System.out.println("1: Change username");
         System.out.println("2: Change password");
@@ -36,7 +34,7 @@ public class MemberMenus {
                 changeInfoMenu(loggedInUser);
             }
             case "2" -> {
-                changePassword(loggedInUser);
+                loggedInUser.changePassword(uInput);
                 changeInfoMenu(loggedInUser);
             }
             case "3" -> MainMenus.memberMainMenu(loggedInUser);
@@ -66,32 +64,11 @@ public class MemberMenus {
         loggedInUser.setUsername(nameToChangeInto);
     }
 
-    /**Small method to change a password, makes sure you entered the correct one by asking you to repeat it
-     * @param loggedInUser Currently logged on user
-     */
-    private static void changePassword(Member loggedInUser){
-        System.out.println("\nEnter the password you want to change to");
-        System.out.print(">>: ");
-
-        String passwordToChangeInto = uInput.nextLine();
-
-        System.out.println("\nPlease repeat your password");
-        System.out.println(">>: ");
-
-        if(passwordToChangeInto.equals(uInput.nextLine())){
-            loggedInUser.setPassword(passwordToChangeInto);
-            System.out.println("Password successfully changed");
-            return;
-        }
-        System.out.println("Password does not match");
-    }
-
-
     /**Method that pops up when a user wants to pay their membership
      * @param loggedInUser Currently logged on user
      */
     public static void payFeeMenu(Member loggedInUser){
-        displayNames(loggedInUser);
+        loggedInUser.displayNames();
 
         System.out.println("1: Change membership level");
         System.out.println("2: Pay membership fee");
@@ -160,7 +137,84 @@ public class MemberMenus {
         System.out.println("Membership has now been paid for");
     }
 
-    public static void registerForActivity(){
+    public static void registerForActivity(Member loggedInUser){
+        List<PTAppointment> availablePTAppointments = PTAppointment.getAvailablePtAppointments(loggedInUser);
+        List<GroupCardio> availableGCAppointments = GroupCardio.getAvailableGCAppointments(loggedInUser);
 
+        int lowerBound = availablePTAppointments.size();
+        int totalSize = availablePTAppointments.size() + availableGCAppointments.size();
+
+        if(totalSize == 0){
+            System.out.println("There are no available appointments");
+            return;
+        }
+
+        displayAllFedAppointments(availablePTAppointments, availableGCAppointments);
+
+        while (true){
+            try {
+                System.out.println("\nEnter number of appointment you wish to register for");
+                System.out.println("Enter 0 to exit");
+                System.out.println(">>: ");
+
+                String strInput = uInput.nextLine();
+                int input = Integer.parseInt(strInput);
+
+                if (input == 0){
+                    return;
+                }
+
+                //Basically, if the input number is in lower bounds that's a pt appointment
+                //Otherwise gc appointment, fix funny number memes, so we got correct index lmao
+                if(input > 0 && input <= totalSize){
+                    if (input <= lowerBound){
+                        availablePTAppointments.get(input - 1).addParticipant(loggedInUser);
+                        return;
+                    }
+                    availableGCAppointments.get(input - (lowerBound + 1)).addParticipant(loggedInUser);
+                }
+            } catch (NumberFormatException e){
+                System.out.println("Please only enter a number");
+            }
+        }
+
+    }
+
+    public static void displayAllRegisteredActivities(Member loggedInUser){
+        List<PTAppointment> ptAppointments = PTAppointment.getRegisteredPtAppointments(loggedInUser);
+        List<GroupCardio> gcAppointments = GroupCardio.getAllRegisteredGCAppointments(loggedInUser);
+
+        int amtOfAppointments = ptAppointments.size() + gcAppointments.size();
+        if(amtOfAppointments == 0){
+            System.out.println("You haven't registered to any appointments");
+            return;
+        }
+
+        displayAllFedAppointments(ptAppointments, gcAppointments);
+    }
+
+    private static void displayAllFedAppointments(List<PTAppointment> ptAppointments, List<GroupCardio> gcAppointments){
+        int i = 1;
+        for (PTAppointment appointment : ptAppointments){
+            System.out.println("\nAppointment " + i);
+            System.out.println("Focus: " + appointment.getFocus());
+            System.out.println("Duration: " + appointment.getDurationInMinutes());
+            System.out.println("Time: " + appointment.getTime());
+            System.out.println("Trainer: " + appointment.getTrainer());
+
+            i++;
+        }
+
+        for (GroupCardio appointment : gcAppointments){
+            System.out.println("\nAppointment " + i);
+            System.out.println("Focus: " + "Group Cardio");
+            System.out.println("Duration: " + appointment.getDurationInMinutes());
+            System.out.println("Time: " + appointment.getTime());
+            System.out.println("Intensity: " + appointment.getIntensity());
+
+            if(appointment.getOutside()){
+                System.out.println("This GC will be outside, the weather will be " + appointment.getWeather());
+            }
+        }
     }
 }

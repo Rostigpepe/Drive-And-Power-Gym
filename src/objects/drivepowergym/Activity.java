@@ -47,10 +47,37 @@ public class Activity {
     }
 
 
+    public List<String> getInfoList(){
+        List<String> infoList = new ArrayList<>();
+
+        infoList.add(Integer.toString(spots));
+        infoList.add(time.toString());
+        infoList.add(Double.toString(durationInMinutes));
+
+
+        return infoList;
+    }
+
     /**Literally just adds a member to participate in the activity
      * @param memberToAdd The member we're adding to the activity
      */
     public void addParticipant(Member memberToAdd){
         participants.add(memberToAdd);
+    }
+
+
+    /**Checks if a member is already in this activity
+     * True == Already in it
+     * False == Not in it
+     * @param memberToCheck The member who we are looking for
+     * @return Whether the member is already a participant or not
+     */
+    public boolean isParticipating(Member memberToCheck){
+        for (Member member : participants){
+            if (member.equals(memberToCheck)){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package objects.drivepowergym;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Person {
 
@@ -51,6 +52,10 @@ public class Person {
         return infoList;
     }
 
+    public void displayNames(){
+        System.out.println("\nName: " + name);
+        System.out.println("Username: " + username + "\n");
+    }
 
     /**Method to check if an entered password matches the Persons actual password
      * @param inputPass Password input by the person
@@ -58,5 +63,26 @@ public class Person {
      */
     public boolean comparePassword(String inputPass){
         return inputPass.equals(password);
+    }
+
+    /**Method that changes password
+     * Prompts for pass twice to confirm they enter the correct one
+     * @param uInput Scanner passed as parameter
+     */
+    public void changePassword(Scanner uInput){
+        System.out.println("\nEnter the password you want to change to");
+        System.out.print(">>: ");
+
+        String passwordToChangeInto = uInput.nextLine();
+
+        System.out.println("\nPlease repeat your password");
+        System.out.println(">>: ");
+
+        if(passwordToChangeInto.equals(uInput.nextLine())){
+            this.setPassword(passwordToChangeInto);
+            System.out.println("Password successfully changed");
+            return;
+        }
+        System.out.println("Password does not match");
     }
 }

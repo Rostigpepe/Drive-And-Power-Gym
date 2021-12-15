@@ -1,8 +1,12 @@
 package objects.drivepowergym;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupCardio extends Activity{
+
+    private static List<GroupCardio> allAppointments = new ArrayList<>();
 
     private int intensity;
     private boolean outside;
@@ -25,6 +29,8 @@ public class GroupCardio extends Activity{
         this.intensity = intensity;
         this.outside = outside;
         this.weather = weather;
+
+        allAppointments.add(this);
     }
 
 
@@ -47,5 +53,49 @@ public class GroupCardio extends Activity{
 
     public String getWeather() {
         return weather;
+    }
+
+    public String getInfoString(){
+        List<String> infoList = getInfoList();
+
+        infoList.add(Integer.toString(intensity));
+        infoList.add(Boolean.toString(outside));
+        infoList.add(weather);
+
+        StringBuilder infoString = new StringBuilder();
+
+        for (String str : infoList){
+            infoString.append(str).append(",");
+        }
+        return infoString.toString();
+    }
+
+    public static List<GroupCardio> getAllAppointments(){
+        return allAppointments;
+    }
+
+    public static List<GroupCardio> getAllRegisteredGCAppointments(Member member){
+        List<GroupCardio> registeredAppointments = new ArrayList<>();
+
+        for (GroupCardio appointment : allAppointments){
+            if(appointment.isParticipating(member)){
+                registeredAppointments.add(appointment);
+            }
+        }
+        return registeredAppointments;
+    }
+
+    public static List<GroupCardio> getAvailableGCAppointments(Member member){
+        List<GroupCardio> memberSpecificAppointments = new ArrayList<>();
+
+        for (GroupCardio appointment : allAppointments){
+            if(!appointment.isParticipating(member)){
+                if (appointment.getOpenSlots() <= 0){
+                    continue;
+                }
+                memberSpecificAppointments.add(appointment);
+            }
+        }
+        return memberSpecificAppointments;
     }
 }

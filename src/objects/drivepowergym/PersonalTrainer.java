@@ -38,9 +38,12 @@ public class PersonalTrainer extends Person {
         allEmployees.add(this);
     }
 
+
     public void setGender(String gender){
         this.gender = gender;
     }
+
+    public void setSpecialty(String specialty) { this.specialty = specialty; }
 
 
     public int getEmploymentID(){
@@ -53,6 +56,16 @@ public class PersonalTrainer extends Person {
 
     public String getSpecialty(){
         return specialty;
+    }
+
+    public static PersonalTrainer getTrainerWithID(int ID){
+        for (PersonalTrainer trainer : allEmployees){
+            if(trainer.employmentID == ID){
+                return trainer;
+            }
+        }
+        System.out.println("Trainer not found, getTrainerWithID in PersonalTrainer");
+        return null;
     }
 
     public String getInfoString(){
@@ -71,6 +84,9 @@ public class PersonalTrainer extends Person {
         return infoString.toString();
     }
 
+    public static List<PersonalTrainer> getAllEmployees(){
+        return allEmployees;
+    }
 
     /**Used to add more total PT hours on top of the already existing ones
      * @param additionalHours The newly acquired amount of hours
@@ -80,16 +96,18 @@ public class PersonalTrainer extends Person {
     }
 
 
-    //Add functionality
-    public void newAppointment(){
-        //Is going to add a new PT appointment for this specific PT
-        //Parameters take are for example, length, date and focus
-        //Possibly take input for all of those upon calling this method
-    }
-
     public static boolean checkForDuplicateIDs(int num){
         for (PersonalTrainer pt : allEmployees){
             if (num == pt.getEmploymentID()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkIfUsernameExists(String usernameToCheck){
+        for (PersonalTrainer employee : allEmployees){
+            if(usernameToCheck.equals(employee.getUsername())){
                 return true;
             }
         }

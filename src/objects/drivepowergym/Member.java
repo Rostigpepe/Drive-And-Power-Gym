@@ -73,6 +73,10 @@ public class Member extends Person{
         return infoString.toString();
     }
 
+    public static List<Member> getAllMembers(){
+        return allMembers;
+    }
+
     /**Updates last payment date to current date, Effectively updating membership
      */
     public void renewMembership(){
@@ -93,5 +97,4 @@ public class Member extends Person{
         }
         return false;
     }
-
 }

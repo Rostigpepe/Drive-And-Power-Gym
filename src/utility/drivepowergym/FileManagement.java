@@ -1,8 +1,6 @@
 package utility.drivepowergym;
 
-import objects.drivepowergym.Member;
-import objects.drivepowergym.MembershipLevels;
-import objects.drivepowergym.PersonalTrainer;
+import objects.drivepowergym.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -20,7 +18,7 @@ public class FileManagement {
     public static void registerNewMember(Member member){
 
         //Try with resources auto closes
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Members", true))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Members"))){
             String stringToWrite = member.getInfoString();
 
             writer.write(stringToWrite);
@@ -41,7 +39,7 @@ public class FileManagement {
     public static void registerNewEmployee(PersonalTrainer employee){
 
         //Auto closes writer when using try with resources
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Employees", true))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Employees"))){
             String stringToWrite = employee.getInfoString();
 
             writer.write(stringToWrite);
@@ -53,6 +51,37 @@ public class FileManagement {
         System.out.println("Employee written to Employees file");
     }
 
+    public static void registerNewPTAppointment(PTAppointment appointment){
+
+        //Try with resources auto closes
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/PTAppointments"))){
+            String stringToWrite = appointment.getInfoString();
+
+            writer.write(stringToWrite);
+            writer.newLine();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("PTAppointment written to PTAppointments file");
+    }
+
+    public static void registerNewGCAppointment(GroupCardio appointment){
+
+        //Try with resources auto closes
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/GCAppointments"))){
+            String stringToWrite = appointment.getInfoString();
+
+            writer.write(stringToWrite);
+            writer.newLine();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("GCAppointment written to GCAppointments file");
+    }
 
     private static MembershipLevels parseStringToMembership(String str){
         MembershipLevels temp;
@@ -126,12 +155,64 @@ public class FileManagement {
         }
     }
 
+    public static void readFromPTAppointments(){
+
+        try(BufferedReader reader = new BufferedReader(new FileReader("resources/PTAppointments"))){
+            String line = reader.readLine();
+
+            while (line != null){
+                String[] infoBits = infoStringToArray(line);
+
+                int spots = Integer.parseInt(infoBits[0]);
+                LocalDate time = LocalDate.parse(infoBits[1]);
+                double duration = Double.parseDouble(infoBits[2]);
+                PersonalTrainer trainer = PersonalTrainer.getTrainerWithID(Integer.parseInt(infoBits[3]));
+                String focus = infoBits[4];
+
+
+                new PTAppointment(spots, time, duration, trainer, focus);
+
+                line = reader.readLine();
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void readFromGCAppointments(){
+
+        try(BufferedReader reader = new BufferedReader(new FileReader("resources/GCAppointments"))){
+            String line = reader.readLine();
+
+            while (line != null){
+                String[] infoBits = infoStringToArray(line);
+
+                int spots = Integer.parseInt(infoBits[0]);
+                LocalDate time = LocalDate.parse(infoBits[1]);
+                double duration = Double.parseDouble(infoBits[2]);
+                int intensity = Integer.parseInt(infoBits[3]);
+                boolean outside = Boolean.parseBoolean(infoBits[4]);
+                String weather = infoBits[5];
+
+
+                new GroupCardio(spots, time, duration, intensity, outside, weather);
+
+                line = reader.readLine();
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
     /**Returns an array with split elements
      * Simply put, takes a String with commas, separates all of them into separate elements, and returns as array
      * @param infoString The string we are going to split
      * @return Returns array of split elements
      */
-    public static String[] infoStringToArray(String infoString){
+    private static String[] infoStringToArray(String infoString){
         String[] infoBits = infoString.split(",");
 
         int i = 0;

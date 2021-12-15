@@ -1,5 +1,8 @@
 package objects.drivepowergym;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person {
 
     private final String name;
@@ -36,6 +39,16 @@ public class Person {
 
     public String getUsername(){
         return username;
+    }
+
+    public List<String> getInfoList(){
+        List<String> infoList = new ArrayList<>();
+
+        infoList.add(name);
+        infoList.add(username);
+        infoList.add(password);
+
+        return infoList;
     }
 
 

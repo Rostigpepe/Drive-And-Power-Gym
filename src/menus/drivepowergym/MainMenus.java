@@ -12,20 +12,6 @@ import java.util.Scanner;
 
 public class MainMenus {
 
-    private static Member testMember = new Member("Robin Stenskytt",
-            "Rostigpepe",
-            "12345",
-            LocalDate.now(),
-            MembershipLevels.OLYMPIAN);
-
-    private static PersonalTrainer testPT = new PersonalTrainer("Rozerin Bozdag",
-            "Mothofthelamp",
-            "12345",
-            1,
-            "Nonbinary",
-            0,
-            "Cardio");
-
     private static final Scanner uInput = new Scanner(System.in);
 
     //Utility class, we don't want instances
@@ -35,20 +21,34 @@ public class MainMenus {
      * If added GUI, replace input with buttons for all the options
      */
     public static void startupMenu(){
-        System.out.println("1: Log in as Member");
-        System.out.println("2: Log in as Employee");
-        System.out.println("3: Log in as Admin");
-        System.out.println("4: Exit");
+        System.out.println("1: Sign up as member");
+        System.out.println("2: Log in as Member");
+        System.out.println("3: Log in as Employee");
+        System.out.println("4: Log in as Admin");
+        System.out.println("5: Exit");
         System.out.print(">>: ");
 
         String input = uInput.nextLine();
 
         switch (input){
             //Replace these with log in screens, and then use the logged-in user as parameters instead
-            case "1" -> memberMainMenu(testMember);
-            case "2" -> employeeMainMenu(testPT);
-            case "3" -> adminMainMenu();
-            case "4" -> Program.exitProgram();
+            case "1" -> {
+                MemberMenus.registerNewMember();
+                MainMenus.startupMenu();
+            }
+            case "2" -> {
+                MemberMenus.memberLogin();
+                MainMenus.startupMenu();
+            }
+            case "3" -> {
+                EmployeeMenus.employeeLogin();
+                MainMenus.startupMenu();
+            }
+            case "4" -> {
+                AdminMenus.adminLogin();
+                MainMenus.startupMenu();
+            }
+            case "5" -> Program.exitProgram();
             default -> {
                 System.out.println("Enter 1-4 instead\n\n");
                 startupMenu();
@@ -69,6 +69,7 @@ public class MainMenus {
         System.out.println("3: Change account information");
         System.out.println("4: Pay membership fee");
         System.out.println("5: Log out");
+        System.out.print(">>: ");
 
         String input = uInput.nextLine();
 
@@ -89,7 +90,7 @@ public class MainMenus {
                 MemberMenus.payFeeMenu(loggedInUser);
                 memberMainMenu(loggedInUser);
             }
-            case "5" -> startupMenu();
+            case "5" -> System.out.println("Logging out");
             default -> {
                 System.out.println("Please enter 1-4\n\n");
                 memberMainMenu(loggedInUser);
@@ -109,6 +110,7 @@ public class MainMenus {
         System.out.println("2: Display appointments");
         System.out.println("3: Change information");
         System.out.println("4: Log out");
+        System.out.print(">>: ");
 
         String input = uInput.nextLine();
 
@@ -125,7 +127,7 @@ public class MainMenus {
                 EmployeeMenus.changeInfoMenu(loggedInUser);
                 employeeMainMenu(loggedInUser);
             }
-            case "4" -> startupMenu();
+            case "4" -> System.out.println("Logging out");
             default -> {
                 System.out.println("Please enter 1-4\n\n");
                 employeeMainMenu(loggedInUser);
@@ -135,7 +137,37 @@ public class MainMenus {
 
 
     public static void adminMainMenu(){
-        System.out.println("Welcome to the admin menu, this is a WIP");
-        startupMenu();
+        System.out.println("1: Register new employee");
+        System.out.println("2: Remove employee");
+        System.out.println("3: Remove member");
+        System.out.println("4: New Group Cardio");
+        System.out.println("5: Log out");
+        System.out.print(">>: ");
+
+        String input = uInput.nextLine();
+
+        switch (input){
+            case "1" -> {
+                AdminMenus.registerNewEmployee();
+                adminMainMenu();
+            }
+            case "2" -> {
+                AdminMenus.removeEmployee();
+                adminMainMenu();
+            }
+            case "3" -> {
+                AdminMenus.removeMember();
+                adminMainMenu();
+            }
+            case "4" -> {
+                AdminMenus.newGCAppointment();
+                adminMainMenu();
+            }
+            case "5" -> System.out.println("Logging out");
+            default -> {
+                System.out.println("Please enter 1-4\n\n");
+                adminMainMenu();
+            }
+        }
     }
 }

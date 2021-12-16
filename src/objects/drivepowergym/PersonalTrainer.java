@@ -7,7 +7,6 @@ import java.util.Random;
 public class PersonalTrainer extends Person {
 
     private static List<PersonalTrainer> allEmployees = new ArrayList<>();
-    private static Random rndSeed = new Random();
 
     private final int employmentID;
     private String gender;
@@ -88,6 +87,15 @@ public class PersonalTrainer extends Person {
         return allEmployees;
     }
 
+    public static PersonalTrainer getPTByUsername(String inputUsername){
+        for (PersonalTrainer employee : allEmployees){
+            if(inputUsername.equals(employee.getUsername())){
+                return employee;
+            }
+        }
+        return null;
+    }
+
     /**Used to add more total PT hours on top of the already existing ones
      * @param additionalHours The newly acquired amount of hours
      */
@@ -95,6 +103,9 @@ public class PersonalTrainer extends Person {
         totalBookedHours += additionalHours;
     }
 
+    public static void removeEmployee(PersonalTrainer inputTrainer){
+        allEmployees.removeIf(trainer -> trainer.equals(inputTrainer));
+    }
 
     public static boolean checkForDuplicateIDs(int num){
         for (PersonalTrainer pt : allEmployees){

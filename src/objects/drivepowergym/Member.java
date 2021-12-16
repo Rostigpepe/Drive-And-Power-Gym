@@ -73,6 +73,15 @@ public class Member extends Person{
         return infoString.toString();
     }
 
+    public static Member getMemberByUsername(String inputUsername){
+        for (Member member : allMembers){
+            if(inputUsername.equals(member.getUsername())){
+                return member;
+            }
+        }
+        return null;
+    }
+
     public static List<Member> getAllMembers(){
         return allMembers;
     }
@@ -83,6 +92,11 @@ public class Member extends Person{
         lastPayment = LocalDate.now();
     }
     public void addMonthToMembership(){lastPayment = lastPayment.plusDays(31); }
+
+
+    public static void removeMember(Member memberToRemove){
+        allMembers.removeIf(member -> member.equals(memberToRemove));
+    }
 
 
     /**If the username already exists, sends back a true, otherwise false

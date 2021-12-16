@@ -6,7 +6,7 @@ import objects.drivepowergym.Member;
 import objects.drivepowergym.PTAppointment;
 import objects.drivepowergym.PersonalTrainer;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Program {
@@ -24,7 +24,12 @@ public class Program {
         MainMenus.startupMenu();
     }
 
-    public static void writeAllToFile(){
+    public static void writeAllToFile() {
+        FileManagement.clearFile("resources/Members");
+        FileManagement.clearFile("resources/Employees");
+        FileManagement.clearFile("resources/PTAppointments");
+        FileManagement.clearFile("resources/GCAppointments");
+
         List<Member> allMembers = Member.getAllMembers();
         List<PersonalTrainer> allEmployees = PersonalTrainer.getAllEmployees();
         List<PTAppointment> allPTAppointments = PTAppointment.getAllAppointments();
@@ -44,7 +49,7 @@ public class Program {
         }
     }
 
-    public static void exitProgram(){
+    public static void exitProgram() {
         writeAllToFile();
         System.out.println("Bye bye");
     }

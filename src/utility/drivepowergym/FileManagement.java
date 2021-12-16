@@ -18,7 +18,7 @@ public class FileManagement {
     public static void registerNewMember(Member member){
 
         //Try with resources auto closes
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Members"))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Members", true))){
             String stringToWrite = member.getInfoString();
 
             writer.write(stringToWrite);
@@ -39,7 +39,7 @@ public class FileManagement {
     public static void registerNewEmployee(PersonalTrainer employee){
 
         //Auto closes writer when using try with resources
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Employees"))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Employees", true))){
             String stringToWrite = employee.getInfoString();
 
             writer.write(stringToWrite);
@@ -54,7 +54,7 @@ public class FileManagement {
     public static void registerNewPTAppointment(PTAppointment appointment){
 
         //Try with resources auto closes
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/PTAppointments"))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/PTAppointments", true))){
             String stringToWrite = appointment.getInfoString();
 
             writer.write(stringToWrite);
@@ -70,7 +70,7 @@ public class FileManagement {
     public static void registerNewGCAppointment(GroupCardio appointment){
 
         //Try with resources auto closes
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/GCAppointments"))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("resources/GCAppointments", true))){
             String stringToWrite = appointment.getInfoString();
 
             writer.write(stringToWrite);
@@ -103,11 +103,10 @@ public class FileManagement {
     /**Reads all members from file and creates objects of them
      */
     public static void readFromMembers(){
+        String line;
 
         try(BufferedReader reader = new BufferedReader(new FileReader("resources/Members"))){
-            String line = reader.readLine();
-
-            while (line != null){
+            while ((line = reader.readLine()) != null){
                 String[] infoBits = infoStringToArray(line);
 
                 String name = infoBits[0];
@@ -117,8 +116,6 @@ public class FileManagement {
                 MembershipLevels membershipLevel = parseStringToMembership(infoBits[4]);
 
                 new Member(name, username, password, lastPayment, membershipLevel);
-
-                line = reader.readLine();
             }
 
         } catch (IOException e){
@@ -130,11 +127,10 @@ public class FileManagement {
     /**Reads all employees from file and creates objects of them
      */
     public static void readFromEmployees(){
+        String line;
 
         try(BufferedReader reader = new BufferedReader(new FileReader("resources/Employees"))){
-            String line = reader.readLine();
-
-            while (line != null){
+            while ((line = reader.readLine()) != null){
                 String[] infoBits = infoStringToArray(line);
 
                 String name = infoBits[0];
@@ -146,8 +142,6 @@ public class FileManagement {
                 String specialty = infoBits[6];
 
                 new PersonalTrainer(name, username, password, employmentID, gender, totalBookedHours, specialty);
-
-                line = reader.readLine();
             }
 
         } catch (IOException e){
@@ -226,4 +220,13 @@ public class FileManagement {
         return infoBits;
     }
 
+    public static void clearFile(String filePath)  {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+            writer.write("");
+
+        } catch (IOException e){
+            System.out.println("Filepath not found");
+            e.printStackTrace();
+        }
+    }
 }

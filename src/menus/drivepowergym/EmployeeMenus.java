@@ -15,6 +15,37 @@ public class EmployeeMenus {
     //Helper class, constructor cringe
     private EmployeeMenus(){}
 
+
+    public static void employeeLogin(){
+        String username;
+        String password;
+        PersonalTrainer employee;
+        System.out.println("\nPlease enter your username");
+        System.out.print(">>: ");
+
+        username = uInput.nextLine();
+        employee = PersonalTrainer.getPTByUsername(username);
+
+        if(employee == null){
+            System.out.println("That username does not exist");
+            return;
+        }
+
+        System.out.println("\nPlease enter your password");
+        System.out.print(">>: ");
+
+        password = uInput.nextLine();
+
+        if(!employee.comparePassword(password)){
+            System.out.println("Incorrect password");
+            return;
+        }
+
+        System.out.println("Successfully logged in\n");
+        MainMenus.employeeMainMenu(employee);
+    }
+
+
     /**Account info change menu lmao
      * Epik gamer I am going insane, monster is op
      * @param loggedInUser Guess twice

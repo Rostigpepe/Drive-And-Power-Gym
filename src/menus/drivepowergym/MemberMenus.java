@@ -5,6 +5,8 @@ import objects.drivepowergym.Member;
 import objects.drivepowergym.MembershipLevels;
 import objects.drivepowergym.PTAppointment;
 
+import java.sql.SQLOutput;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +16,78 @@ public class MemberMenus {
 
     //Helper class, constructors are cringe
     private MemberMenus(){}
+
+
+    public static void memberLogin(){
+        String username;
+        String password;
+        Member member;
+        System.out.println("\nPlease enter your username");
+        System.out.print(">>: ");
+
+        username = uInput.nextLine();
+        member = Member.getMemberByUsername(username);
+
+        if(member == null){
+            System.out.println("That username does not exist");
+            return;
+        }
+
+        System.out.println("\nPlease enter your password");
+        System.out.print(">>: ");
+
+        password = uInput.nextLine();
+
+        if(!member.comparePassword(password)){
+            System.out.println("Incorrect password");
+            return;
+        }
+
+        System.out.println("Successfully logged in\n");
+        MainMenus.memberMainMenu(member);
+    }
+
+    public static void registerNewMember(){
+        String name;
+        String username;
+        String password;
+        LocalDate lastPayment = LocalDate.now();
+        MembershipLevels membershipLevel = MembershipLevels.SILVER;
+
+        System.out.println("\nWhats your name?");
+        System.out.print(">>: ");
+        name = uInput.nextLine();
+
+        while(true){
+            System.out.println("\nWhat username do you want?");
+            System.out.print(">>: ");
+            username = uInput.nextLine();
+
+            if(!Member.checkIfUsernameExists(username)){
+                break;
+            }
+            System.out.println("Username already exists");
+        }
+
+        while(true){
+            System.out.println("\nWhat password do you want?");
+            System.out.print(">>: ");
+            password = uInput.nextLine();
+
+            System.out.println("Please enter your password again");
+            System.out.print(">>: ");
+            String tempPassword = uInput.nextLine();
+
+            if(password.equals(tempPassword)){
+                break;
+            }
+            System.out.println("Passwords do not match");
+        }
+        System.out.println("You've been assigned " + MembershipLevels.SILVER + " level");
+        System.out.println("You can change this later");
+
+        new Member(name, username, password, lastPayment, membershipLevel);
+    }
 
 
     /**Menu for displaying options to change account information
@@ -50,7 +124,7 @@ public class MemberMenus {
      * @param loggedInUser Currently logged on user
      */
     private static void changeUsername(Member loggedInUser){
-        System.out.println("\nEnter the name you want to change to");
+        System.out.println("\nEnter the username you want to change to");
         System.out.print(">>: ");
 
         String nameToChangeInto = uInput.nextLine();

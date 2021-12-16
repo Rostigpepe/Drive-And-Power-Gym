@@ -1,2 +1,0 @@
-def,abc_124,111,male,cardio,123,2.0
-employee,emp_123,123,male,cardio,112233,3.0
